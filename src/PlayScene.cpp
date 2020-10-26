@@ -152,8 +152,8 @@ void PlayScene::GUI_Function() const
 	}*/
 	ImGui::Separator();
 
-	static float rampHeight = 0;
-	static float rampWidth = 0;
+	static float rampHeight = 300;
+	static float rampWidth = 400;
 
 	//lab5 content
 	ImGui::SliderFloat("Ramp height(cm)", &rampHeight, 0, 500);
@@ -166,30 +166,8 @@ void PlayScene::GUI_Function() const
 	SDL_RenderDrawLine(Renderer::Instance()->getRenderer(), originX, -rampHeight + originY, rampWidth + originX, originY);
 
 	m_pBall->fallenposition = glm::vec2(originX, -rampHeight + originY);
-	//static int xPlayerPos = 100;
-	//if (ImGui::SliderInt("Player Position X", &xPlayerPos, 0, 500))
-	//{
-	//	m_pPlayer->getTransform()->position.x = xPlayerPos;
-	//	m_pBall->throwposition = glm::vec2(xPlayerPos, 400);
 
-	
-	/*float distance;
-	if (xEnemyPos - xPlayerPos >= 0)
-	{
-		distance = xEnemyPos - xPlayerPos;
-	}
-	else
-	{
-		distance = xPlayerPos - xEnemyPos;
-	}
-	ImGui::Value("The distance between is: ", distance);*//*
-
-	ImGui::Value("The throwing distance is: ", m_pBall->getTransform()->position.x - xPlayerPos);
-	ImGui::Value("The throwing apex is: ", 400 - m_pBall->getTransform()->position.y);*/
 	glm::vec2 speed = m_pBall->getRigidBody()->velocity;
-
-	//ImGui::Value("ball speed X-axis: ", speed.x);
-	//ImGui::Value("ball speed Y-axis: ", -speed.y);
 
 	static float mass = 12.8;
 	ImGui::SliderFloat("Object mass(kg)", &mass, 0, 1000);
