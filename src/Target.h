@@ -22,9 +22,11 @@ public:
 	glm::vec2 fallenposition;
 
 	float fricAcc;
+	float velocity;
+	float acc;
 	void doThrow();
 	void doFallen();
-
+	bool ifLanded = true;
 private:
 	void m_move();
 	void m_checkBounds();

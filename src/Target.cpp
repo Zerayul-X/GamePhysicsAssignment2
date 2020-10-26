@@ -47,17 +47,21 @@ void Target::m_move()
 {
 	float deltaTime = 1.0f / 60.0f;
 	glm::vec2 gravity = glm::vec2(0, 9.8f);
-
+	cout << getRigidBody()->velocity.x << endl;
 	if (getTransform()->position.y <= 500) {
 		/*if (!isGravityEnabled) getRigidBody()->velocity.y = 0;*/
 
 		getRigidBody()->velocity += getRigidBody()->acceleration * (deltaTime * mpp);
 		getTransform()->position += getRigidBody()->velocity * (deltaTime * mpp);
-
+		velocity += acc * (deltaTime * mpp);
 	}
 	else {
 		getRigidBody()->velocity.y = 0;
 		if (getRigidBody()->velocity.x > 0) {
+			if (ifLanded) {
+				getRigidBody()->velocity.x = velocity;
+				ifLanded = false;
+			}
 			getRigidBody()->velocity.x -= fricAcc * (deltaTime * mpp);
 		}
 		else {
@@ -83,6 +87,8 @@ void Target::doThrow()
 
 void Target::doFallen()
 {
+	ifLanded = true;
 	getTransform()->position = fallenposition;
 	getRigidBody()->velocity = fallenspeed;
+	velocity = 0;
 }
