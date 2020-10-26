@@ -104,16 +104,6 @@ void PlayScene::start()
 	m_pBall = new Target();
 	addChild(m_pBall);
 
-	//// Player Sprite
-	//m_pPlayer = new Player();
-	//addChild(m_pPlayer);
-	//m_playerFacingRight = false;
-
-
-	//m_pEnemy = new Player();
-	//addChild(m_pEnemy);
-	//m_playerFacingRight = true;
-
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
 	m_pBackButton->getTransform()->position = glm::vec2(100.0f, 550.0f);
@@ -192,18 +182,12 @@ void PlayScene::GUI_Function() const
 	}*/
 	ImGui::Separator();
 
-	static bool isGravityEnabled = false;
-	if (ImGui::Checkbox("Gravity", &isGravityEnabled))
-	{
-		m_pBall->isGravityEnabled = isGravityEnabled;
-	}
-
-	static int rampHeight = 0;
-	static int rampWidth = 0;
+	static float rampHeight = 0;
+	static float rampWidth = 0;
 
 	//lab5 content
-	ImGui::SliderInt("Ramp height(cm): ", &rampHeight, 0, 500);
-	ImGui::SliderInt("Ramp width(cm): ", &rampWidth, 0, 700);
+	ImGui::SliderFloat("Ramp height(cm)", &rampHeight, 0, 500);
+	ImGui::SliderFloat("Ramp width(cm)", &rampWidth, 0, 700);
 	int originX = 100;
 	int originY = 500;
 	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
@@ -216,16 +200,9 @@ void PlayScene::GUI_Function() const
 	//if (ImGui::SliderInt("Player Position X", &xPlayerPos, 0, 500))
 	//{
 	//	m_pPlayer->getTransform()->position.x = xPlayerPos;
-	//	//m_pBall->isGravityEnabled = isGravityEnabled;
 	//	m_pBall->throwposition = glm::vec2(xPlayerPos, 400);
 
-	//}
-	//static int xEnemyPos = 700;
-	//if (ImGui::SliderInt("Enemy Position X", &xEnemyPos, 500, 1000))
-	//{
-	//	m_pEnemy->getTransform()->position.x = xEnemyPos;
-	//}
-
+	
 	/*float distance;
 	if (xEnemyPos - xPlayerPos >= 0)
 	{
@@ -245,21 +222,22 @@ void PlayScene::GUI_Function() const
 	//ImGui::Value("ball speed Y-axis: ", -speed.y);
 
 	static float mass = 12.8;
-	ImGui::SliderFloat("The mass(kg) of the object is: ", &mass, 0, 1000);
-	ImGui::Value("The mass(kg) of the ball is: ", mass);
+	ImGui::SliderFloat("Object mass(kg)", &mass, 0, 1000);
+
+	float rampLength;
+	rampLength = sqrt( (rampHeight * rampHeight) + (rampWidth * rampWidth) );
+	ImGui::Value("The length(cm) of the ramp is", rampLength);
 
 
+	//Net Force
+	float netForce;
+	netForce = mass * 9.8 * (rampHeight / rampLength);
+	ImGui::Value("The netforce(N) of the object is", netForce);
 
-	float accc;
-	if (isGravityEnabled)
-	{
-		accc = -9.8;
-	}
-	else
-	{
-		accc = 0;
-	}
-	ImGui::Value("The acceleration of the ball is : ", accc);
+	float acc;
+	acc = netForce / mass;
+	ImGui::Value("The acceleration of the ball is", acc);
+	float accX, accY;
 
 	//static float velocity[2] = { 0,0 };
 	//if (ImGui::SliderFloat2("Throw Speed X, Y", velocity, 0, 200))
