@@ -190,12 +190,12 @@ void PlayScene::GUI_Function() const
 	ImGui::Value("The acceleration(m/s^2) of the object is", acc);
 	ImGui::Value("The x-axis velocity(m/s) of the object is", m_pBall->getRigidBody()->velocity.x);
 	ImGui::Value("The y-axis velocity(m/s) of the object is", m_pBall->getRigidBody()->velocity.y);
-	if (m_pBall->getTransform()->position.y >= 500) {
+	/*if (m_pBall->getTransform()->position.y >= 500) {
 		ImGui::Value("Distance(cm) travelled after ramp", m_pBall->getTransform()->position.x - rampWidth - originX);
 	}
 	else {
 		ImGui::Value("Distance(cm) travelled after ramp", 0);
-	}
+	}*/
 	m_pBall->getRigidBody()->acceleration.x = acc * (rampWidth / rampLength);
 	m_pBall->getRigidBody()->acceleration.y = acc * (rampHeight / rampLength);
 
