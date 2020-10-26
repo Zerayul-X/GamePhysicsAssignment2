@@ -46,35 +46,35 @@ void PlayScene::handleEvents()
 {
 	EventManager::Instance().update();
 
-	// handle player movement with GameController
-	if (SDL_NumJoysticks() > 0)
-	{
-		if (EventManager::Instance().getGameController(0) != nullptr)
-		{
-			const auto deadZone = 10000;
-			if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
-			{
-				m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
-				m_playerFacingRight = true;
-			}
-			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
-			{
-				m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
-				m_playerFacingRight = false;
-			}
-			else
-			{
-				if (m_playerFacingRight)
-				{
-					m_pPlayer->setAnimationState(PLAYER_IDLE_RIGHT);
-				}
-				else
-				{
-					m_pPlayer->setAnimationState(PLAYER_IDLE_LEFT);
-				}
-			}
-		}
-	}
+	//// handle player movement with GameController
+	//if (SDL_NumJoysticks() > 0)
+	//{
+	//	if (EventManager::Instance().getGameController(0) != nullptr)
+	//	{
+	//		const auto deadZone = 10000;
+	//		if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
+	//		{
+	//			m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
+	//			m_playerFacingRight = true;
+	//		}
+	//		else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
+	//		{
+	//			m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
+	//			m_playerFacingRight = false;
+	//		}
+	//		else
+	//		{
+	//			if (m_playerFacingRight)
+	//			{
+	//				m_pPlayer->setAnimationState(PLAYER_IDLE_RIGHT);
+	//			}
+	//			else
+	//			{
+	//				m_pPlayer->setAnimationState(PLAYER_IDLE_LEFT);
+	//			}
+	//		}
+	//	}
+	//}
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
@@ -104,15 +104,15 @@ void PlayScene::start()
 	m_pBall = new Target();
 	addChild(m_pBall);
 
-	// Player Sprite
-	m_pPlayer = new Player();
-	addChild(m_pPlayer);
-	m_playerFacingRight = false;
+	//// Player Sprite
+	//m_pPlayer = new Player();
+	//addChild(m_pPlayer);
+	//m_playerFacingRight = false;
 
 
-	m_pEnemy = new Player();
-	addChild(m_pEnemy);
-	m_playerFacingRight = true;
+	//m_pEnemy = new Player();
+	//addChild(m_pEnemy);
+	//m_playerFacingRight = true;
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
@@ -159,13 +159,13 @@ void PlayScene::start()
 	const SDL_Color blue = { 237, 244, 255, 255 };//light blue
 
 	/* Instructions Label */
-	m_pInstructionsLabel_1 = new Label("Press the backtick (`) to access the physics control.", "Consolas", 20, blue);
-	m_pInstructionsLabel_1->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.6f, 470.0f);
+	m_pInstructionsLabel_1 = new Label("Press the backtick (`) to access the physics control.", "Consolas", 15, blue);
+	m_pInstructionsLabel_1->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.6f, 530.0f);
 
 	addChild(m_pInstructionsLabel_1);
 
-	m_pInstructionsLabel_2 = new Label("Set ALL(IMPORTANT!) the values before click on 'Fallen' button.", "Consolas", 20, blue);
-	m_pInstructionsLabel_2->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.6f, 500.0f);
+	m_pInstructionsLabel_2 = new Label("Set ALL(IMPORTANT!) the values before click on 'Fallen' button.", "Consolas", 15, blue);
+	m_pInstructionsLabel_2->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.6f, 570.0f);
 
 	addChild(m_pInstructionsLabel_2);
 }
@@ -199,20 +199,19 @@ void PlayScene::GUI_Function() const
 	}
 
 	static int rampHeight = 0;
-
 	static int rampWidth = 0;
 
-
 	//lab5 content
-	ImGui::SliderInt("Ramp height: ", &rampHeight, 0, 500);
-	ImGui::SliderInt("Ramp width: ", &rampWidth, 0, 500);
-	int triangleX = 100;
-	int triangleY = 400;
+	ImGui::SliderInt("Ramp height(cm): ", &rampHeight, 0, 500);
+	ImGui::SliderInt("Ramp width(cm): ", &rampWidth, 0, 700);
+	int originX = 100;
+	int originY = 500;
 	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
-	SDL_RenderDrawLine(Renderer::Instance()->getRenderer(), triangleX, triangleY, triangleX, -rampHeight + triangleY);
-	SDL_RenderDrawLine(Renderer::Instance()->getRenderer(), triangleX, triangleY, rampWidth + triangleX, triangleY);
-	SDL_RenderDrawLine(Renderer::Instance()->getRenderer(), triangleX, -rampHeight + triangleY, rampWidth + triangleX, triangleY);
+	SDL_RenderDrawLine(Renderer::Instance()->getRenderer(), originX, originY, originX, -rampHeight + originY);
+	SDL_RenderDrawLine(Renderer::Instance()->getRenderer(), originX, originY, rampWidth + originX, originY);
+	SDL_RenderDrawLine(Renderer::Instance()->getRenderer(), originX, -rampHeight + originY, rampWidth + originX, originY);
 
+	m_pBall->fallenposition = glm::vec2(originX, -rampHeight + originY);
 	//static int xPlayerPos = 100;
 	//if (ImGui::SliderInt("Player Position X", &xPlayerPos, 0, 500))
 	//{
@@ -245,8 +244,9 @@ void PlayScene::GUI_Function() const
 	//ImGui::Value("ball speed X-axis: ", speed.x);
 	//ImGui::Value("ball speed Y-axis: ", -speed.y);
 
-	static float mass = 2.2;
-	ImGui::Value("The mass of the ball is: ", mass);
+	static float mass = 12.8;
+	ImGui::SliderFloat("The mass(kg) of the object is: ", &mass, 0, 1000);
+	ImGui::Value("The mass(kg) of the ball is: ", mass);
 
 
 

@@ -13,7 +13,7 @@ Target::Target()
 
 	setWidth(size.x);
 	setHeight(size.y);
-	getTransform()->position = glm::vec2(100.0f, 400.0f);
+	getTransform()->position = glm::vec2(100.0f, 500.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
 
@@ -48,7 +48,7 @@ void Target::m_move()
 	float deltaTime = 1.0f / 60.0f;
 	glm::vec2 gravity = glm::vec2(0, 9.8f);
 
-	if (getTransform()->position.y <= 400) {
+	if (getTransform()->position.y <= 500) {
 		/*if (!isGravityEnabled) getRigidBody()->velocity.y = 0;*/
 		if (isGravityEnabled)
 		{
