@@ -21,7 +21,7 @@ public:
 	glm::vec2 fallenspeed;
 	glm::vec2 fallenposition;
 
-
+	float fricAcc;
 	void doThrow();
 	void doFallen();
 

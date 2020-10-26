@@ -194,6 +194,9 @@ void PlayScene::GUI_Function() const
 	static float mass = 12.8;
 	ImGui::SliderFloat("Object mass(kg)", &mass, 0, 1000);
 
+	static float fricCoefficient = 0.42;
+	ImGui::SliderFloat("Coefficient of Friction", &fricCoefficient, 0, 1);
+
 	float rampLength;
 	rampLength = sqrt( (rampHeight * rampHeight) + (rampWidth * rampWidth) );
 	ImGui::Value("The length(cm) of the ramp is", rampLength);
@@ -206,31 +209,23 @@ void PlayScene::GUI_Function() const
 
 	float acc;
 	acc = netForce / mass;
-	ImGui::Value("The acceleration of the ball is", acc);
-
-
+	ImGui::Value("The acceleration(m/s^2) of the object is", acc);
+	ImGui::Value("The x-axis velocity(m/s) of the object is", m_pBall->getRigidBody()->velocity.x);
+	ImGui::Value("The y-axis velocity(m/s) of the object is", m_pBall->getRigidBody()->velocity.y);
+	if (m_pBall->getTransform()->position.y >= 500) {
+		ImGui::Value("Distance(cm) travelled after ramp", m_pBall->getTransform()->position.x - rampWidth - originX);
+	}
+	else {
+		ImGui::Value("Distance(cm) travelled after ramp", 0);
+	}
 	m_pBall->getRigidBody()->acceleration.x = acc * (rampWidth / rampLength);
 	m_pBall->getRigidBody()->acceleration.y = acc * (rampHeight / rampLength);
-	//static float velocity[2] = { 0,0 };
-	//if (ImGui::SliderFloat2("Throw Speed X, Y", velocity, 0, 200))
-	//{
-	//	m_pBall->throwspeed = glm::vec2(velocity[0], -velocity[1]);
-	//}
-	//static float velocity[2] = { 0,0 };
 
-	//static float ballSpeed = 95; //we set ball speed to a constant because that was what the first question said
-	//static float ballAngle;
-	//float angleRad;
-
-	//ImGui::Value("ball speed: ", ballSpeed);
-	//if (ImGui::SliderFloat("Thrown angle", &ballAngle, 0, 90)) {
-	//	/*if (ImGui::SliderFloat("Ball speed is: ", &ballSpeed, 0, 200))*/
-	//	angleRad = (ballAngle / 180) * M_PI;
-	//	velocity[0] = ballSpeed * cos(angleRad);
-	//	velocity[1] = ballSpeed * sin(angleRad);
-	//	m_pBall->throwspeed = glm::vec2(velocity[0], -velocity[1]);
-	//	
-	//}
+	float surfaceFriction;
+	surfaceFriction = mass * 9.8 * fricCoefficient;
+	ImGui::Value("The surface frection(N) is", surfaceFriction);
+	
+	m_pBall->fricAcc = surfaceFriction / mass;
 
 	ImGui::End();
 	ImGui::EndFrame();

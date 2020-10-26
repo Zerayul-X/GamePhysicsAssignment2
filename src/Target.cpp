@@ -57,6 +57,12 @@ void Target::m_move()
 	}
 	else {
 		getRigidBody()->velocity.y = 0;
+		if (getRigidBody()->velocity.x > 0) {
+			getRigidBody()->velocity.x -= fricAcc * (deltaTime * mpp);
+		}
+		else {
+			getRigidBody()->velocity.x = 0;
+		}
 		getTransform()->position += getRigidBody()->velocity * (deltaTime * mpp);
 	}
 }
