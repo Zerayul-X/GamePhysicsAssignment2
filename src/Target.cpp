@@ -50,16 +50,14 @@ void Target::m_move()
 
 	if (getTransform()->position.y <= 500) {
 		/*if (!isGravityEnabled) getRigidBody()->velocity.y = 0;*/
-		if (isGravityEnabled)
-		{
-			getRigidBody()->velocity += (getRigidBody()->acceleration + gravity) * (mpp * deltaTime);
-		}
-		else
-		{
-			getRigidBody()->velocity += getRigidBody()->acceleration * (deltaTime * mpp);
-		}
+
+		getRigidBody()->velocity += getRigidBody()->acceleration * (deltaTime * mpp);
 		getTransform()->position += getRigidBody()->velocity * (deltaTime * mpp);
 
+	}
+	else {
+		getRigidBody()->velocity.y = 0;
+		getTransform()->position += getRigidBody()->velocity * (deltaTime * mpp);
 	}
 }
 

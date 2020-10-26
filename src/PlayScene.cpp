@@ -46,36 +46,6 @@ void PlayScene::handleEvents()
 {
 	EventManager::Instance().update();
 
-	//// handle player movement with GameController
-	//if (SDL_NumJoysticks() > 0)
-	//{
-	//	if (EventManager::Instance().getGameController(0) != nullptr)
-	//	{
-	//		const auto deadZone = 10000;
-	//		if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
-	//		{
-	//			m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
-	//			m_playerFacingRight = true;
-	//		}
-	//		else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
-	//		{
-	//			m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
-	//			m_playerFacingRight = false;
-	//		}
-	//		else
-	//		{
-	//			if (m_playerFacingRight)
-	//			{
-	//				m_pPlayer->setAnimationState(PLAYER_IDLE_RIGHT);
-	//			}
-	//			else
-	//			{
-	//				m_pPlayer->setAnimationState(PLAYER_IDLE_LEFT);
-	//			}
-	//		}
-	//	}
-	//}
-
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		TheGame::Instance()->quit();
@@ -237,8 +207,10 @@ void PlayScene::GUI_Function() const
 	float acc;
 	acc = netForce / mass;
 	ImGui::Value("The acceleration of the ball is", acc);
-	float accX, accY;
 
+
+	m_pBall->getRigidBody()->acceleration.x = acc * (rampWidth / rampLength);
+	m_pBall->getRigidBody()->acceleration.y = acc * (rampHeight / rampLength);
 	//static float velocity[2] = { 0,0 };
 	//if (ImGui::SliderFloat2("Throw Speed X, Y", velocity, 0, 200))
 	//{
